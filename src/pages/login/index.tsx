@@ -51,9 +51,6 @@ const Login = () => {
   };
 
   const loginHandler = () => {
-    console.log("These are the creds", {
-      body: { credentials },
-    });
     const url = "http://192.168.0.12:8000/login/";
 
     axios
@@ -61,7 +58,6 @@ const Login = () => {
         body: credentials,
       })
       .then((response) => {
-        console.log("Registration successful", response);
         const accessToken = response.data?.access_token;
         sessionStorage.setItem("access_token", accessToken);
         dispatch(login(credentials.email));

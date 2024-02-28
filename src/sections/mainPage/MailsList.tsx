@@ -16,11 +16,16 @@ interface EmailDataTypes {
   summary: string;
 }
 
-const Mail = (
-  { onSelectEmail }: { onSelectEmail: (email: any) => void },
-  { selectedEmailType }: { selectedEmailType: string }
-) => {
+interface MailProps {
+  onSelectEmail: (email: string) => void;
+  selectedEmailType: string;
+}
+
+const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
   const [emailData, setEmailData] = useState<EmailDataTypes[]>([]);
+  const [filteredEmailData, setFilteredEmailData] = useState<EmailDataTypes[]>(
+    []
+  );
   const [selectedMail, setSelectedMail] = useState(-1);
 
   const getMailData = () => {
@@ -33,6 +38,7 @@ const Mail = (
           },
         })
         .then((response) => {
+          setEmailData(response?.data?.Emails);
           const filteredData = response?.data?.Emails.filter(
             (item: any) => item.email_type === selectedEmailType
           );
@@ -40,7 +46,7 @@ const Mail = (
             ...item,
             details: JSON.parse(item.details),
           }));
-          setEmailData(filteredDetails);
+          setFilteredEmailData(filteredDetails);
         })
         .catch((error) => {});
     }
@@ -50,18 +56,34 @@ const Mail = (
     setSelectedMail(index);
     const selectedEmail = emailData[index];
     onSelectEmail(selectedEmail);
-    console.log("This is the emailData ====>>>>", emailData);
-    console.log("This is the selected mail ===>>>", emailData[index]);
   };
 
   useEffect(() => {
-    getMailData();
+    if (emailData.length !== 0) {
+      console.log("Checking where the data going");
+      const filteredData = emailData.filter(
+        (item: any) => item.email_type === selectedEmailType
+      );
+      const filteredDetails = filteredData.map((item: any) => ({
+        ...item,
+        details: JSON.parse(item.details),
+      }));
+      setFilteredEmailData(filteredDetails);
+      console.log(
+        "Checking where the data going ======>>>>>>>>",
+        filteredData
+      );
+    } else {
+      getMailData();
+    }
+    console.log("This is the email data ==>>", emailData);
+    console.log("Thiss is the selecetedEmailtype", selectedEmailType);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmailType]);
 
   return (
     <Box display="flex" flexDirection="column" gap="8px">
-      {emailData.map((item, index) => (
+      {filteredEmailData.map((item, index) => (
         <Box
           sx={{
             display: "flex",
@@ -73,7 +95,7 @@ const Mail = (
           onClick={() => handleEmailClick(index)}
         >
           <Box>
-            <Image src={item.logo} alt="Amazon" width={42} height={42} />
+            {/* <Image src={item.logo} alt="Amazon" width={42} height={42} /> */}
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <Box

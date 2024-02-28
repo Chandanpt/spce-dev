@@ -21,9 +21,9 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
   selectedEmail,
 }) => {
   const data = selectedEmail;
-  const details = selectedEmail.details;
-  console.log("This is the final mail dataaaaa ===>>>", data);
-  console.log("This is the final mail ===>>>", details);
+  const details = (selectedEmail.details);
+
+  console.log("This is the email details =====>>>>", selectedEmail.details);
 
   const filteredDetails =
     details &&
@@ -97,14 +97,14 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
                     padding: "8px 16px",
                     borderRadius: "5px",
                     display: "flex",
-                    flexWrap: "wrap"
+                    flexWrap: "wrap",
                   }}
                 >
                   <Typography
                     sx={{
                       fontSize: "16px",
                       color: "#333333",
-                      wordWrap: 'break-word'
+                      wordWrap: "break-word",
                     }}
                   >
                     {value}

@@ -94,7 +94,6 @@ const Sidebar = ({ onSelectEmailType }: { onSelectEmailType: (cat: string) => vo
   const data = sidebarData;
 
   const handleCategory = (index: number, cat: string) => {
-    console.log("This is the index", cat);
     setActiveStep(index);
     onSelectEmailType(cat);
   };

@@ -25,7 +25,6 @@ const Profile = () => {
         })
         .then((response) => {
           // setProfileData(response.data);
-          console.log("This is the profile data", response.data.User);
           setuserData(response?.data?.User);
         })
         .catch((error) => {

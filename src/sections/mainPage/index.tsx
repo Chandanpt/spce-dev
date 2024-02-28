@@ -14,16 +14,17 @@ import MainLayout from "@/layout/MainLayout";
 
 const MainPage = () => {
   const [selectedEmail, setSelectedEmail] = useState("");
-  const [selectedEmailType, setSelectedEmailType] = useState("");
-
-  useEffect(() => {
-    console.log("This is the selected type ===>>>", selectedEmailType);
-  }, []);
+  const [selectedEmailType, setSelectedEmailType] = useState<string>("");
 
   const forCheckingEmail = (val: string) => {
-    console.log("This is the value === >>>", val);
     setSelectedEmailType(val);
   };
+
+  useEffect(() => {
+    // Invoke the function whenever selectedEmailType changes
+    forCheckingEmail(selectedEmailType);
+    console.log("This is in mainPage", selectedEmailType);
+  }, [selectedEmailType]);
 
   return (
     <MainLayout selectEmailCheck={forCheckingEmail}>

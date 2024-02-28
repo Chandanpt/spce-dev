@@ -40,8 +40,6 @@ const Login = () => {
     }
   };
 
-  console.log("These are the passwords", credentials);
-
   return (
     <Grid container spacing={2} height="100vh">
       <Grid item xs={6} padding="0">

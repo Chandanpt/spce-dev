@@ -50,9 +50,6 @@ const Register = () => {
   };
 
   const registerHandler = () => {
-    console.log("These are the creds", {
-      body: { credentials },
-    });
     const url = "http://192.168.0.12:8000/authorize/";
 
     axios
@@ -60,10 +57,6 @@ const Register = () => {
         body: credentials,
       })
       .then((response) => {
-        console.log(
-          "Registration successful",
-          response.data?.authorization_url
-        );
         const authorizationUrl = response.data?.authorization_url;
         // window.open(authorizationUrl);
 

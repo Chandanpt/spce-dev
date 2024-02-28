@@ -11,7 +11,6 @@ interface Props {
 const MainLayout = ({ children, selectEmailCheck }: Props) => {
   const [selectedEmailType, setSelectedEmailType] = useState<string>("");
 
-  console.log("This is the selected type ===>>>", selectedEmailType);
   useEffect(() => {
     selectEmailCheck(selectedEmailType);
   }, [selectedEmailType]);
