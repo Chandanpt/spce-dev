@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   AccordionDetails,
   AccordionSummary,
@@ -8,17 +9,77 @@ import {
   Stepper,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import Image from "next/image";
+import { AccordionWrapper, CustomSummary } from "./sidebar.style";
 import logo from "../../assets/Logo.svg";
-import data from "./SidebarData";
+import accounts from "../../assets/Accounts.svg";
+import active_accounts from "../../assets/active_accounts.svg";
+import transactional from "../../assets/transactional.svg";
+import active_transactional from "../../assets/Active_Transactional.svg";
+import marketing from "../../assets/Marketing.svg";
+import active_marketing from "../../assets/active_marketing.svg";
+import personal from "../../assets/Personal.svg";
+import active_personal from "../../assets/active_personal.svg";
+import action from "../../assets/action.svg";
+import active_action from "../../assets/active_action.svg";
+import pin from "../../assets/pin.svg";
+import active_pin from "../../assets/active_pin.svg";
 import downArrow from "../../assets/Down_Arrow.svg";
 import activeDownArrow from "../../assets/Down_Arrow_Active.svg";
-import Image from "next/image";
-import { AccordionWrapper } from "./sidebar.style";
-import { useAppSelector } from "@/redux/store";
 
-const Sidebar = () => {
-  const [activeStep, setActiveStep] = useState(0);
+const sidebarData = [
+  {
+    title: "Accounts",
+    subtitle: [
+      "Notifications",
+      "Security Alerts",
+      "Service Messages",
+      "Updates",
+    ],
+    image: accounts,
+    selectedImage: active_accounts,
+  },
+  {
+    title: "Transactional",
+    subtitle: [
+      "Reservation",
+      "Orders",
+      "Appointments",
+      "Tickets",
+      "Subscriptions",
+      "Payments",
+    ],
+    image: transactional,
+    selectedImage: active_transactional,
+  },
+  {
+    title: "Marketing",
+    subtitle: ["Invites", "Newsletter", "Promotions", "Survey"],
+    image: marketing,
+    selectedImage: active_marketing,
+  },
+  {
+    title: "Personal",
+    subtitle: ["Personal"],
+    image: personal,
+    selectedImage: active_personal,
+  },
+  {
+    title: "Action Required",
+    subtitle: ["Action Required"],
+    image: action,
+    selectedImage: active_action,
+  },
+  {
+    title: "Pinned",
+    subtitle: ["Pinned"],
+    image: pin,
+    selectedImage: active_pin,
+  },
+];
+
+const Sidebar = ({ onSelectEmailType }: { onSelectEmailType: (cat: string) => void }) => {
+  const [activeStep, setActiveStep] = useState(1);
   const [expandedAccordion, setExpandedAccordion] = useState<number | false>(
     false
   );
@@ -29,6 +90,13 @@ const Sidebar = () => {
 
   const calculateAccordionHeight = (index: number): string => {
     return expandedAccordion === index ? "auto" : "40px";
+  };
+  const data = sidebarData;
+
+  const handleCategory = (index: number, cat: string) => {
+    console.log("This is the index", cat);
+    setActiveStep(index);
+    onSelectEmailType(cat);
   };
 
   return (
@@ -69,15 +137,17 @@ const Sidebar = () => {
             <AccordionWrapper
               sx={{
                 backgroundColor:
-                  expandedAccordion === index ? "#0497A7" : "#F4F4F4",
+                  expandedAccordion === index ? "#FFFFFF" : "#F4F4F4",
               }}
               onChange={() => handleAccordionChange(index)}
               expanded={index === expandedAccordion}
             >
-              <AccordionSummary
+              <CustomSummary
                 expandIcon={
                   expandedAccordion === index ? (
-                    <Box sx={{rotate: "180deg"}}><Image src={activeDownArrow} alt="Expand" /></Box>
+                    <Box sx={{ rotate: "180deg" }}>
+                      <Image src={activeDownArrow} alt="Expand" />
+                    </Box>
                   ) : (
                     <Image src={downArrow} alt="Expand" />
                   )
@@ -85,24 +155,24 @@ const Sidebar = () => {
                 aria-controls="panel1-content"
                 id="panel1-header"
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  backgroundColor:
+                    expandedAccordion === index ? "#0497A7" : "#F4F4F4",
+                  color: expandedAccordion === index ? "#FFFFFF" : "#333333",
                   width: "100%",
-                  position: "absolute",
-                  cursor: "pointer",
                 }}
               >
                 <Box display="flex" width="100%" gap="8px">
                   <Image
-                    src={item.image}
+                    src={
+                      expandedAccordion === index
+                        ? item.selectedImage
+                        : item.image
+                    }
                     alt={item.title}
                     width={20}
                     height={20}
                   />
-                  <Typography
-                    sx={{ fontSize: "17px", color: "#333333", width: "100%" }}
-                  >
+                  <Typography sx={{ fontSize: "16px", width: "100%" }}>
                     {item.title}
                   </Typography>
                 </Box>
@@ -110,23 +180,22 @@ const Sidebar = () => {
                   sx={{
                     fontSize: "14px",
                     fontWeight: "bold",
-                    color: "#333333",
                     textWrap: "nowrap",
                     marginRight: "8px",
                   }}
                 >
                   2 New
                 </Typography>
-              </AccordionSummary>
+              </CustomSummary>
               <AccordionDetails>
                 <Box
                   sx={{
                     zIndex: 1,
+                    paddingY: "16px",
                     bgcolor: "background.paper",
                     position: "relative",
-                    marginTop: "230px",
                     height: calculateAccordionHeight(index),
-                    transition: "height 0.3s ease",
+                    transition: "height 0.1s ease",
                     "& .MuiStepConnector-line": {
                       borderColor: "#E3E3E3",
                       borderLeftWidth: "2px",
@@ -156,10 +225,11 @@ const Sidebar = () => {
                     "& .MuiStepLabel-label": {
                       color: "#333333",
                       fontSize: "14px",
-                      marginLeft: "30px",
+                      marginLeft: "20px",
                       marginTop: "-10px",
                       marginBottom: "-20px",
                       padding: "4px 12px",
+                      cursor: "pointer",
                       "&.Mui-active": {
                         borderRadius: "4px",
                         backgroundColor: "#ECECEC",
@@ -170,9 +240,11 @@ const Sidebar = () => {
                   <Box sx={{ maxWidth: "400px" }}>
                     <Stepper activeStep={activeStep} orientation="vertical">
                       {item.subtitle.map((subItem, index) => (
-                        <Step key={index}>
+                        <Step
+                          key={index}
+                          onClick={() => handleCategory(index, subItem)}
+                        >
                           <StepLabel
-                            onClick={() => setActiveStep(index)}
                             sx={{
                               "&.MuiStepLabel-root": {
                                 padding: "0px",

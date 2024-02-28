@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { ReactElement, ReactNode } from "react";
-import Transactional from "./transactional";
+import MainPage from "@/sections/mainPage";
 
 export default function Home(page: ReactNode) {
   return (
@@ -12,7 +12,7 @@ export default function Home(page: ReactNode) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
         <main>
-          <Transactional />
+          <MainPage />
         </main>
     </>
   );

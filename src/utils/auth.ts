@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAppSelector } from '@/redux/store';
 
-export const useRequireAuth = () => {
+const useRequireAuth = () => {
   const router = useRouter();
   const isLoggedIn = useAppSelector((state) => state.authReducer.value.isLoggedIn)
 

@@ -3,7 +3,34 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import amazon from "../../assets/Amazon.png";
 
-const MailDetails = () => {
+interface SelectedEmail {
+  details: {
+    [key: string]: string;
+  };
+  email_type: string;
+  email_use_case: string;
+  sender: string;
+  subject: string;
+  summary: string;
+  thread_id: string;
+  user_uuid: string;
+  uuid: string;
+}
+
+const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
+  selectedEmail,
+}) => {
+  const data = selectedEmail;
+  const details = selectedEmail.details;
+  console.log("This is the final mail dataaaaa ===>>>", data);
+  console.log("This is the final mail ===>>>", details);
+
+  const filteredDetails =
+    details &&
+    Object.entries(details)
+      .filter(([_, value]) => value !== null)
+      .map(([title, value]) => ({ title, value }));
+
   return (
     <Box
       sx={{
@@ -29,7 +56,7 @@ const MailDetails = () => {
             <Typography
               sx={{ fontSize: "16px", fontWeight: "bold", color: "#333333" }}
             >
-              ORDER CONFIRMATION
+              {data.email_use_case}
             </Typography>
             <Typography
               sx={{ fontSize: "14px", fontWeight: "bold", color: "#0497A7" }}
@@ -46,126 +73,45 @@ const MailDetails = () => {
           padding: "20px 32px",
         }}
       >
-        <Typography sx={{ fontSize: "20px", color: "#FFFFFF" }}>
-          An email sent immediately after a customer places an order, confirming
-          the details of the order, including items purchased, quantities,
-          prices, and shipping information. It often includes an order number
-          for reference.
+        <Typography sx={{ fontSize: "18px", color: "#FFFFFF" }}>
+          {data.summary}
         </Typography>
       </Box>
-      <Box display="flex" gap="16px">
-        <Box sx={{ width: "50%" }}>
-          <Typography
-            sx={{ fontSize: "20px", color: "#333333", marginY: "4px" }}
-          >
-            Number of items
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#F4F4F4",
-              fontSize: "18px",
-              color: "#333333",
-              padding: "8px 16px",
-              borderRadius: "5px",
-            }}
-          >
-            4 ITEMS
-          </Typography>
-        </Box>
-        <Box sx={{ width: "50%" }}>
-          <Typography
-            sx={{ fontSize: "20px", color: "#333333", marginY: "4px" }}
-          >
-            Expected delivery
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#F4F4F4",
-              fontSize: "18px",
-              color: "#333333",
-              padding: "8px 16px",
-              borderRadius: "5px",
-            }}
-          >
-            4 ITEMS
-          </Typography>
-        </Box>
-      </Box>
-      <Box display="flex" gap="16px">
-        <Box sx={{ width: "50%" }}>
-          <Typography
-            sx={{ fontSize: "20px", color: "#333333", marginY: "4px" }}
-          >
-            Delivery address
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#F4F4F4",
-              fontSize: "18px",
-              color: "#333333",
-              padding: "8px 16px",
-              borderRadius: "5px",
-            }}
-          >
-            3338 17TH ST.
-          </Typography>
-        </Box>
-        <Box sx={{ width: "50%" }}>
-          <Typography
-            sx={{ fontSize: "20px", color: "#333333", marginY: "4px" }}
-          >
-            Confirmation code
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#F4F4F4",
-              fontSize: "18px",
-              color: "#333333",
-              padding: "8px 16px",
-              borderRadius: "5px",
-            }}
-          >
-            ABCD123
-          </Typography>
-        </Box>
-      </Box>
-      <Box display="flex" gap="16px">
-        <Box sx={{ width: "50%" }}>
-          <Typography
-            sx={{ fontSize: "20px", color: "#333333", marginY: "4px" }}
-          >
-            Total cost
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#F4F4F4",
-              fontSize: "18px",
-              color: "#333333",
-              padding: "8px 16px",
-              borderRadius: "5px",
-            }}
-          >
-            $245.56
-          </Typography>
-        </Box>
-        <Box sx={{ width: "50%" }}>
-          <Typography
-            sx={{ fontSize: "20px", color: "#333333", marginY: "4px" }}
-          >
-            Payment method
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#F4F4F4",
-              fontSize: "18px",
-              color: "#333333",
-              padding: "8px 16px",
-              borderRadius: "5px",
-            }}
-          >
-            AMEX ..0345
-          </Typography>
-        </Box>
+
+      <Box display="flex" flexWrap="wrap" gap="16px">
+        {filteredDetails &&
+          filteredDetails
+            .filter(
+              ({ value }) => value !== null && value !== "" && value !== "N/A"
+            )
+            .map(({ title, value }) => (
+              <Box key={title} width="45%" marginBottom="16px">
+                <Typography
+                  sx={{ fontSize: "18px", color: "#333333", marginY: "4px" }}
+                >
+                  {title}
+                </Typography>
+                <Box
+                  sx={{
+                    backgroundColor: "#F4F4F4",
+                    padding: "8px 16px",
+                    borderRadius: "5px",
+                    display: "flex",
+                    flexWrap: "wrap"
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      color: "#333333",
+                      wordWrap: 'break-word'
+                    }}
+                  >
+                    {value}
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
       </Box>
 
       <Typography

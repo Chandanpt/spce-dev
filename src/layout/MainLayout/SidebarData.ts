@@ -2,14 +2,12 @@ const sidebarData = [
   {
     title: "Accounts",
     subtitle: [
-      "Reservation",
-      "Orders",
-      "Appointments",
-      "Tickets",
-      "Subscriptions",
-      "Payments",
+      "Notifications",
+      "Security Alerts",
+      "Service Messages",
+      "Updates",
     ],
-    image: "/Accounts.svg",
+    image: "/accounts.svg",
   },
   {
     title: "Transactional",
@@ -21,31 +19,24 @@ const sidebarData = [
       "Subscriptions",
       "Payments",
     ],
-    image: "/Transactional.svg",
+    image: "/transactional.svg",
   },
   {
     title: "Marketing",
     subtitle: [
-      "Reservation",
-      "Orders",
-      "Appointments",
-      "Tickets",
-      "Subscriptions",
-      "Payments",
+      "Invites",
+      "Newsletter",
+      "Promotions",
+      "Survey",
     ],
-    image: "/Marketing.svg",
+    image: "/marketing.svg",
   },
   {
     title: "Personal",
     subtitle: [
-      "Reservation",
-      "Orders",
-      "Appointments",
-      "Tickets",
-      "Subscriptions",
-      "Payments",
+      "Personal"
     ],
-    image: "/Personal.svg",
+    image: "/personal.svg",
   },
 ];
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -9,12 +9,24 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Mail from "./MailsList";
 import MailDetails from "./MailDetails";
-import { AccordionWrapper } from "@/layout/MainLayout/sidebar.style";
 import Layout from "@/layout";
+import MainLayout from "@/layout/MainLayout";
 
 const MainPage = () => {
+  const [selectedEmail, setSelectedEmail] = useState("");
+  const [selectedEmailType, setSelectedEmailType] = useState("");
+
+  useEffect(() => {
+    console.log("This is the selected type ===>>>", selectedEmailType);
+  }, []);
+
+  const forCheckingEmail = (val: string) => {
+    console.log("This is the value === >>>", val);
+    setSelectedEmailType(val);
+  };
+
   return (
-    <Layout>
+    <MainLayout selectEmailCheck={forCheckingEmail}>
       <Box sx={{ display: "flex", gap: "16px" }}>
         <Chip
           label="Action Required"
@@ -93,19 +105,24 @@ const MainPage = () => {
               boxShadow: "0px 7px 11px #00000029",
             }}
           >
-            Orders
+            {selectedEmailType}
           </AccordionSummary>
           <AccordionDetails
             sx={{ marginY: "30px", background: "none", padding: "0" }}
           >
-            <Mail />
+            <Mail
+              onSelectEmail={setSelectedEmail}
+              selectedEmailType={selectedEmailType}
+            />
           </AccordionDetails>
         </Accordion>
-        <Box sx={{ width: "100%" }}>
-          <MailDetails />
-        </Box>
+        {selectedEmail && (
+          <Box sx={{ width: "100%" }}>
+            <MailDetails selectedEmail={selectedEmail} />
+          </Box>
+        )}
       </Box>
-    </Layout>
+    </MainLayout>
   );
 };
 

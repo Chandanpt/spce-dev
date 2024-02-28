@@ -4,22 +4,26 @@ import Image from "next/image";
 import amazon from "../../assets/Amazon.png";
 import axios from "axios";
 import pin from "../../assets/pin.svg";
+import bluePin from "../../assets/blue_pin.svg";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
+import { format } from "date-fns";
 
 interface EmailDataTypes {
+  logo: string;
+  date: string;
   email_use_case: string;
   summary: string;
 }
 
-const Mail = () => {
+const Mail = (
+  { onSelectEmail }: { onSelectEmail: (email: any) => void },
+  { selectedEmailType }: { selectedEmailType: string }
+) => {
   const [emailData, setEmailData] = useState<EmailDataTypes[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("Tickets");
-  const [selectedEmail, setSelectedEmail] = useState(1);
+  const [selectedMail, setSelectedMail] = useState(-1);
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  const getProfileData = () => {
+  const getMailData = () => {
     const accessToken = sessionStorage.getItem("access_token");
     if (accessToken) {
       axios
@@ -29,48 +33,49 @@ const Mail = () => {
           },
         })
         .then((response) => {
-          // setProfileData(response.data);
-          console.log("This is the profile data", response.data.Emails);
           const filteredData = response?.data?.Emails.filter(
-            (item: any) => item.email_type === selectedCategory
+            (item: any) => item.email_type === selectedEmailType
           );
           const filteredDetails = filteredData.map((item: any) => ({
             ...item,
             details: JSON.parse(item.details),
           }));
-          console.log("This is the dataaaa ===>>>", filteredDetails);
           setEmailData(filteredDetails);
         })
-        .catch((error) => {
-          console.error("Error fetching profile data", error);
-        });
+        .catch((error) => {});
     }
   };
 
   const handleEmailClick = (index: number) => {
-    console.log("Selected Email Details:", index);
-    setSelectedEmail(index);
+    setSelectedMail(index);
     const selectedEmail = emailData[index];
-    console.log("This is the selectedEmail", selectedEmail);
-    // dispatch()
+    onSelectEmail(selectedEmail);
+    console.log("This is the emailData ====>>>>", emailData);
+    console.log("This is the selected mail ===>>>", emailData[index]);
   };
 
   useEffect(() => {
-    getProfileData();
-  }, []);
+    getMailData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedEmailType]);
 
   return (
     <Box display="flex" flexDirection="column" gap="8px">
       {emailData.map((item, index) => (
         <Box
-          sx={{ display: "flex", gap: "8px", cursor: "pointer" }}
+          sx={{
+            display: "flex",
+            gap: "8px",
+            cursor: "pointer",
+            marginBottom: "8px",
+          }}
           key={index}
           onClick={() => handleEmailClick(index)}
         >
           <Box>
-            <Image src={amazon} alt="Amazon" width={42} height={42} />
+            <Image src={item.logo} alt="Amazon" width={42} height={42} />
           </Box>
-          <Box>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <Box
               sx={{
                 display: "flex",
@@ -88,13 +93,7 @@ const Mail = () => {
                 >
                   {item.email_use_case}
                 </Typography>
-                <Box sx={{}}>
-                  <Image
-                    src={pin}
-                    alt="Pin"
-                    style={{ color: index === selectedEmail ? "red" : "green" }}
-                  />
-                </Box>
+                <Image src={index === selectedMail ? bluePin : pin} alt="Pin" />
               </Box>
               <Box>
                 <Typography
@@ -104,14 +103,14 @@ const Mail = () => {
                     color: "#0497A7",
                   }}
                 >
-                  February 1, 2024 | 10:54 AM
+                  {format(new Date(item.date), "MMMM d, yyyy | hh:mm a")}
                 </Typography>
               </Box>
             </Box>
             <Box
               sx={{
                 fontSize: "12px",
-                fontWeight: index === selectedEmail ? "bold" : "regular",
+                fontWeight: index === selectedMail ? "bold" : "regular",
                 color: "#333333",
                 fontFamily: "sans-serif",
               }}

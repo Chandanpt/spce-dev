@@ -1,33 +1,34 @@
-import { Accordion, styled } from "@mui/material";
+import { Accordion, AccordionSummary, styled } from "@mui/material";
 
 export const AccordionWrapper = styled(Accordion)`
   background-color: #f4f4f4;
   width: 80%;
-  border-radius: 0 30px 30px 0 !important;
   border: none;
+  border-radius: 0 30px 30px 0 !important;
   box-shadow: none;
-  height: 40px;
+  height: auto;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
   margin: 12px 0;
-  "& .MuiAccordion-root::before": {
+  "& .muiaccordion-root::before": {
     background-color: red;
   }
 `;
 
-// sx={{
-//   backgroundColor: index === 1 ? "#0497A7" : "#F4F4F4",
-//   width: "80%",
-//   borderRadius: "0 30px 30px 0 !important",
-//   border: "none",
-//   boxShadow: "none",
-//   height: "40px",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "space-between",
-//   marginY: "12px",
-//   "& .MuiAccordion-root::before": {
-//     backgroundColor: "red",
-//   },
-// }}
+export const CustomSummary = styled(AccordionSummary)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  width: 100%;
+  border-radius: 0 30px 30px 0 !important;
+  cursor: pointer;
+  background: red;
+  "&.Mui-expanded": {
+    min-height: 60px;
+  };
+  "& .MuiAccordionSummary-content": {
+    margin: 0;
+  };
+`;
