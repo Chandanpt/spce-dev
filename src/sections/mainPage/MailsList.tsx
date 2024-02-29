@@ -5,25 +5,17 @@ import amazon from "../../assets/Amazon.png";
 import axios from "axios";
 import pin from "../../assets/pin.svg";
 import bluePin from "../../assets/blue_pin.svg";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch } from "react-redux";
 import { format } from "date-fns";
-
-interface EmailDataTypes {
-  logo: string;
-  date: string;
-  email_use_case: string;
-  summary: string;
-}
+import { SelectedEmail } from "./MailDetails";
 
 interface MailProps {
-  onSelectEmail: (email: string) => void;
+  onSelectEmail: (email: SelectedEmail | null) => void;
   selectedEmailType: string;
 }
 
 const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
-  const [emailData, setEmailData] = useState<EmailDataTypes[]>([]);
-  const [filteredEmailData, setFilteredEmailData] = useState<EmailDataTypes[]>(
+  const [emailData, setEmailData] = useState<SelectedEmail[]>([]);
+  const [filteredEmailData, setFilteredEmailData] = useState<SelectedEmail[]>(
     []
   );
   const [selectedMail, setSelectedMail] = useState(-1);
@@ -54,13 +46,15 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
 
   const handleEmailClick = (index: number) => {
     setSelectedMail(index);
-    const selectedEmail = emailData[index];
+    const selectedEmail = filteredEmailData[index];
+    console.log("This is the selectedEmail", filteredEmailData);
     onSelectEmail(selectedEmail);
   };
 
   useEffect(() => {
+    setSelectedMail(-1);
+    onSelectEmail(null);
     if (emailData.length !== 0) {
-      console.log("Checking where the data going");
       const filteredData = emailData.filter(
         (item: any) => item.email_type === selectedEmailType
       );
@@ -69,10 +63,6 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
         details: JSON.parse(item.details),
       }));
       setFilteredEmailData(filteredDetails);
-      console.log(
-        "Checking where the data going ======>>>>>>>>",
-        filteredData
-      );
     } else {
       getMailData();
     }

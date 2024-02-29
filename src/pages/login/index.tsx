@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { cookies } from "next/headers";
 import {
   Box,
   Button,
@@ -26,6 +27,7 @@ interface Credentials {
   [key: string]: string;
 }
 
+
 const Login = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     email: "",
@@ -34,7 +36,7 @@ const Login = () => {
 
   const router = useRouter();
 
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -65,7 +67,7 @@ const Login = () => {
       })
       .catch((error) => {
         console.error("Registration failed", error);
-        router.push("login")
+        router.push("login");
       });
   };
 

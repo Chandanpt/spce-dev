@@ -8,22 +8,21 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Mail from "./MailsList";
-import MailDetails from "./MailDetails";
-import Layout from "@/layout";
+import MailDetails, { SelectedEmail } from "./MailDetails";
 import MainLayout from "@/layout/MainLayout";
 
 const MainPage = () => {
-  const [selectedEmail, setSelectedEmail] = useState("");
+  const [selectedEmail, setSelectedEmail] = useState<SelectedEmail | null>(null);
   const [selectedEmailType, setSelectedEmailType] = useState<string>("");
 
   const forCheckingEmail = (val: string) => {
     setSelectedEmailType(val);
   };
 
+  console.log("This is selected Email", selectedEmail);
+
   useEffect(() => {
-    // Invoke the function whenever selectedEmailType changes
     forCheckingEmail(selectedEmailType);
-    console.log("This is in mainPage", selectedEmailType);
   }, [selectedEmailType]);
 
   return (

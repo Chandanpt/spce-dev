@@ -1,12 +1,13 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import amazon from "../../assets/Amazon.png";
 
-interface SelectedEmail {
+export interface SelectedEmail {
   details: {
     [key: string]: string;
   };
+  date: string;
   email_type: string;
   email_use_case: string;
   sender: string;
@@ -21,9 +22,26 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
   selectedEmail,
 }) => {
   const data = selectedEmail;
-  const details = (selectedEmail.details);
+  const eventTicketUpdateDetails = selectedEmail.details;
 
-  console.log("This is the email details =====>>>>", selectedEmail.details);
+  console.log("This is the details", data);
+
+  let details;
+
+  if (
+    eventTicketUpdateDetails &&
+    typeof eventTicketUpdateDetails === "object"
+  ) {
+    if (
+      data.email_use_case in eventTicketUpdateDetails &&
+      typeof eventTicketUpdateDetails[data.email_use_case] === "object"
+    ) {
+      details = eventTicketUpdateDetails[data.email_use_case];
+    } else {
+      // If "Event Ticket Update" is not present, use the details directly
+      details = eventTicketUpdateDetails;
+    }
+  }
 
   const filteredDetails =
     details &&
@@ -98,17 +116,22 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
                     borderRadius: "5px",
                     display: "flex",
                     flexWrap: "wrap",
+                    textWrap: "wrap",
+                    wordWrap: "break-word",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: "16px",
-                      color: "#333333",
-                      wordWrap: "break-word",
-                    }}
-                  >
-                    {value}
-                  </Typography>
+                  {value != null && (
+                    <Typography
+                      sx={{
+                        fontSize: "16px",
+                        color: "#333333",
+                        wordWrap: "break-word",
+                        textWrap: "wrap",
+                      }}
+                    >
+                      {value}
+                    </Typography>
+                  )}
                 </Box>
               </Box>
             ))}

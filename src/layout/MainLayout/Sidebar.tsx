@@ -79,7 +79,7 @@ const sidebarData = [
 ];
 
 const Sidebar = ({ onSelectEmailType }: { onSelectEmailType: (cat: string) => void }) => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(-1);
   const [expandedAccordion, setExpandedAccordion] = useState<number | false>(
     false
   );
