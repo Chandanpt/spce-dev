@@ -37,9 +37,10 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
       typeof eventTicketUpdateDetails[data.email_use_case] === "object"
     ) {
       details = eventTicketUpdateDetails[data.email_use_case];
+      console.log("This is from use case", details)
     } else {
-      // If "Event Ticket Update" is not present, use the details directly
       details = eventTicketUpdateDetails;
+      console.log("This directky from dteails", details)
     }
   }
 
