@@ -2,11 +2,14 @@ import React, { ReactNode } from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import amazon from "../../assets/Amazon.png";
+import Link from "next/link";
+import { format } from "date-fns";
 
 export interface SelectedEmail {
   details: {
     [key: string]: string;
   };
+  logo: string;
   date: string;
   email_type: string;
   email_use_case: string;
@@ -24,8 +27,6 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
   const data = selectedEmail;
   const eventTicketUpdateDetails = selectedEmail.details;
 
-  console.log("This is the details", data);
-
   let details;
 
   if (
@@ -37,10 +38,8 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
       typeof eventTicketUpdateDetails[data.email_use_case] === "object"
     ) {
       details = eventTicketUpdateDetails[data.email_use_case];
-      console.log("This is from use case", details)
     } else {
       details = eventTicketUpdateDetails;
-      console.log("This directky from dteails", details)
     }
   }
 
@@ -64,7 +63,14 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <Image src={amazon} alt="Amazon" width={48} height={48} />
+        <Image
+          src={data.logo}
+          alt="Amazon"
+          width={48}
+          height={48}
+          style={{ objectFit: "contain" }}
+          unoptimized
+        />
         <Box>
           <Typography
             sx={{ fontSize: "22px", fontWeight: "bold", color: "#333333" }}
@@ -80,7 +86,7 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
             <Typography
               sx={{ fontSize: "14px", fontWeight: "bold", color: "#0497A7" }}
             >
-              25/12/2023 | 10:54 AM
+              {format(new Date(data.date), "dd/MM/yyyy | hh:mm a")}
             </Typography>
           </Box>
         </Box>
@@ -119,15 +125,32 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
                     flexWrap: "wrap",
                     textWrap: "wrap",
                     wordWrap: "break-word",
+                    overflow: "hidden",
                   }}
                 >
-                  {value != null && (
+                  {value != null && title.toLowerCase().includes("link") ? (
                     <Typography
                       sx={{
                         fontSize: "16px",
                         color: "#333333",
                         wordWrap: "break-word",
                         textWrap: "wrap",
+                        cursor: "pointer",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    </Typography>
+                  ) : (
+                    <Typography
+                      sx={{
+                        fontSize: "16px",
+                        color: "#333333",
+                        wordWrap: "break-word",
+                        textWrap: "wrap",
+                        overflow: "hidden",
                       }}
                     >
                       {value}

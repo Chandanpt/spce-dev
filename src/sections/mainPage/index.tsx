@@ -19,8 +19,6 @@ const MainPage = () => {
     setSelectedEmailType(val);
   };
 
-  console.log("This is selected Email", selectedEmail);
-
   useEffect(() => {
     forCheckingEmail(selectedEmailType);
   }, [selectedEmailType]);

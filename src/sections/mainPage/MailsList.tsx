@@ -7,6 +7,7 @@ import pin from "../../assets/pin.svg";
 import bluePin from "../../assets/blue_pin.svg";
 import { format } from "date-fns";
 import { SelectedEmail } from "./MailDetails";
+import spce from "../../assets/Logo.svg";
 
 interface MailProps {
   onSelectEmail: (email: SelectedEmail | null) => void;
@@ -47,7 +48,6 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
   const handleEmailClick = (index: number) => {
     setSelectedMail(index);
     const selectedEmail = filteredEmailData[index];
-    console.log("This is the selectedEmail", filteredEmailData);
     onSelectEmail(selectedEmail);
   };
 
@@ -66,8 +66,6 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
     } else {
       getMailData();
     }
-    console.log("This is the email data ==>>", emailData);
-    console.log("Thiss is the selecetedEmailtype", selectedEmailType);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmailType]);
 
@@ -84,8 +82,29 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
           key={index}
           onClick={() => handleEmailClick(index)}
         >
-          <Box>
-            {/* <Image src={item.logo} alt="Amazon" width={42} height={42} /> */}
+          <Box
+            sx={{
+              borderRadius: "42px",
+              minHeight: "42px",
+              height: "42px",
+              minWidth: "42px",
+              width: "42px",
+              overflow: "hidden",
+              border:
+                index === selectedMail
+                  ? "2px solid #0497A7"
+                  : "1px solid #0497A7",
+              padding: "2px",
+            }}
+          >
+            <Image
+              src={item.logo === "None" ? spce : item.logo}
+              alt="Amazon"
+              width={42}
+              height={42}
+              style={{ objectFit: "contain" }}
+              unoptimized
+            />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <Box
