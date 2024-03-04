@@ -11,7 +11,7 @@ const useRequireAuth = () => {
   useEffect(() => {
     const accessToken = sessionStorage.getItem('access_token');
 
-    if (!accessToken && !['/login', '/register', '/confirm-password'].includes(router.pathname)) {
+    if (!accessToken && !['/login', '/sign-up', '/confirm-password'].includes(router.pathname)) {
       router.push('/login');
     }
   }, [router, isLoggedIn]);

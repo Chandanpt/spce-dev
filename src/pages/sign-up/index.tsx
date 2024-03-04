@@ -22,7 +22,7 @@ export interface Credentials {
   [key: string]: string | number;
 }
 
-const Register = () => {
+const Signup = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     username: "",
     email: "",
@@ -30,6 +30,7 @@ const Register = () => {
     password: "",
     confirmpassword: "",
   });
+  const [isExisting, setIsExisting] = useState<boolean>(false);
 
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
@@ -65,18 +66,20 @@ const Register = () => {
     }
   };
 
-  const registerHandler = () => {
+  const signupHandler = () => {
     const errors: Record<string, string> = {};
+    setIsExisting(false);
 
     Object.keys(credentials).forEach((property) => {
       const value = credentials[property].toString().trim();
       if (value === "") {
-        errors[property] = "Please fill the empty field";
+        errors[property] = "Please fill the empty field!";
       }
     });
 
     if (!isPasswordValid(credentials.password)) {
-      errors.password = "Password should be minimum 8 characters with atleast 1 lowercase, uppercase, number and special character!";
+      errors.password =
+        "Password should be minimum 8 characters with atleast 1 lowercase, uppercase, number and special character!";
     }
 
     if (credentials.password !== credentials.confirmpassword) {
@@ -93,13 +96,17 @@ const Register = () => {
           body: credentials,
         })
         .then((response) => {
-          const authorizationUrl = response.data?.authorization_url;
+          if (response?.data?.Message !== "User Already Exist") {
+            const authorizationUrl = response.data?.authorization_url;
 
-          const link = document.createElement("a");
-          link.href = authorizationUrl;
-          link.target = "_blank";
-          link.click();
-          document.body.removeChild(link);
+            const link = document.createElement("a");
+            link.href = authorizationUrl;
+            link.target = "_blank";
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            setIsExisting(true);
+          }
         })
         .catch((error) => {
           console.error("Registration failed", error);
@@ -176,11 +183,23 @@ const Register = () => {
                     },
                   }}
                 />
-                <FormHelperText sx={{ margin: "0px" }}>
+                <FormHelperText
+                  sx={{
+                    margin: "0px",
+                    marginBottom: validationErrors[item] ? "8px" : "0px",
+                  }}
+                >
                   {validationErrors[item]}
                 </FormHelperText>
               </FormControl>
             ))}
+            {isExisting && (
+              <Box>
+                <Typography sx={{ color: "red", fontSize: "14px" }}>
+                  User Already Exists!
+                </Typography>
+              </Box>
+            )}
             <Box
               sx={{
                 display: "flex",
@@ -191,7 +210,7 @@ const Register = () => {
                 gap: "20px",
               }}
             >
-              <StyledButton onClick={() => registerHandler()} title="SIGN UP" />
+              <StyledButton onClick={() => signupHandler()} title="SIGN UP" />
               <Typography sx={{ color: "#0497A7", fontSize: "20px" }}>
                 Already have an account?{" "}
                 <span
@@ -223,4 +242,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Signup;

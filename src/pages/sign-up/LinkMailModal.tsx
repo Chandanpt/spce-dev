@@ -29,7 +29,7 @@ export default function LinkMailModal({
     onClose(); 
   };
 
-  const registerHandler = () => {
+  const signupHandler = () => {
     const url = "http://192.168.0.12:8000/authorize/";
 
     axios
@@ -147,7 +147,7 @@ export default function LinkMailModal({
         </FormControl>
       </DialogContent>
       <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-        <StyledButton onClick={registerHandler} title="SUBMIT" />
+        <StyledButton onClick={signupHandler} title="SUBMIT" />
       </DialogActions>
     </Dialog>
   );

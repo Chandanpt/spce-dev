@@ -27,12 +27,13 @@ interface Credentials {
   [key: string]: string;
 }
 
-
 const Login = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     email: "",
     password: "",
   });
+  const [isIncorrectCredentials, setIsIncorrectCredentials] =
+    useState<boolean>(false);
 
   const router = useRouter();
 
@@ -54,6 +55,7 @@ const Login = () => {
 
   const loginHandler = () => {
     const url = "http://192.168.0.12:8000/login/";
+    setIsIncorrectCredentials(false);
 
     axios
       .post(url, {
@@ -66,6 +68,10 @@ const Login = () => {
         router.push("/");
       })
       .catch((error) => {
+        console.log("This is the response", error?.response?.data?.detail);
+        if (error?.response?.data?.detail === "Incorrect email or password") {
+          setIsIncorrectCredentials(true);
+        }
         console.error("Registration failed", error);
         router.push("login");
       });
@@ -153,6 +159,13 @@ const Login = () => {
                 Forgot Password ?
               </Typography>
             </Box>
+            {isIncorrectCredentials && (
+              <Box>
+                <Typography sx={{ color: "red", fontSize: "14px" }}>
+                  Please enter correct email and password!
+                </Typography>
+              </Box>
+            )}
             <Box
               sx={{
                 display: "flex",
@@ -168,7 +181,7 @@ const Login = () => {
                 Don&apos;t have an account?{" "}
                 <span
                   style={{ fontWeight: "bold", cursor: "pointer" }}
-                  onClick={() => router.push("/register")}
+                  onClick={() => router.push("/sign-up")}
                 >
                   Sign Up
                 </span>

@@ -5,7 +5,7 @@ export const middleware = (req: NextRequest) => {
   const path = req.nextUrl.pathname;
 
   const isPublicPath =
-    path === "/login" || path === "/register" || path === "/confirm-password";
+    path === "/login" || path === "/sign-up" || path === "/confirm-password";
 
   const tokenCookie = req.cookies.get("isLoggedIn");
   const token = tokenCookie?.value || "";
@@ -22,5 +22,5 @@ export const middleware = (req: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/", "/profile", "/login", "/register", "/confirm-password"],
+  matcher: ["/", "/profile", "/login", "/sign-up", "/confirm-password"],
 };
