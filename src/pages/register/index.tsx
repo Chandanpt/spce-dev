@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Divider,
@@ -9,66 +9,102 @@ import {
   Typography,
 } from "@mui/material";
 import LoginBackground from "@/components/LoginBackground";
-import { Label } from "@mui/icons-material";
 import StyledButton from "@/components/Button";
-import Image from "next/image";
-import google from "../../assets/google.svg";
 import { useRouter } from "next/router";
-import LinkMailModal from "./LinkMailModal";
 import axios from "axios";
 
-interface Credentials {
+export interface Credentials {
   username: string;
   email: string;
+  emailQuantity: number;
   password: string;
   confirmpassword: string;
-  [key: string]: string;
+  [key: string]: string | number;
 }
 
 const Register = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     username: "",
     email: "",
+    emailQuantity: 0,
     password: "",
     confirmpassword: "",
   });
 
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
+
   const router = useRouter();
+
+  const isPasswordValid = (password: string): boolean => {
+    // At least 8 characters, 1 uppercase, 1 lowercase, and 1 special character
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (
     event
   ) => {
     const property = event.target.name;
+    const { value } = event.target;
 
-    if (property in credentials) {
-      const { value } = event.target;
-      setCredentials((prevCredentials) => ({
-        ...prevCredentials,
-        [property]: value,
+    setCredentials((prevCredentials) => ({
+      ...prevCredentials,
+      [property]: value,
+    }));
+
+    // Clear password match error when typing in password or confirm password
+    if (property === "password" || property === "confirmpassword") {
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmpassword: "",
       }));
     }
   };
 
   const registerHandler = () => {
-    const url = "http://192.168.0.12:8000/authorize/";
+    const errors: Record<string, string> = {};
 
-    axios
-      .post(url, {
-        body: credentials,
-      })
-      .then((response) => {
-        const authorizationUrl = response.data?.authorization_url;
-        // window.open(authorizationUrl);
+    Object.keys(credentials).forEach((property) => {
+      const value = credentials[property].toString().trim();
+      if (value === "") {
+        errors[property] = "Please fill the empty field";
+      }
+    });
 
-        const link = document.createElement("a");
-        link.href = authorizationUrl;
-        link.target = "_blank";
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch((error) => {
-        console.error("Registration failed", error);
-      });
+    if (!isPasswordValid(credentials.password)) {
+      errors.password = "Password should be minimum 8 characters with atleast 1 lowercase, uppercase, number and special character!";
+    }
+
+    if (credentials.password !== credentials.confirmpassword) {
+      errors.confirmpassword = "Password does not match";
+    }
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      const url = "http://192.168.0.12:8000/authorize/";
+
+      axios
+        .post(url, {
+          body: credentials,
+        })
+        .then((response) => {
+          const authorizationUrl = response.data?.authorization_url;
+
+          const link = document.createElement("a");
+          link.href = authorizationUrl;
+          link.target = "_blank";
+          link.click();
+          document.body.removeChild(link);
+        })
+        .catch((error) => {
+          console.error("Registration failed", error);
+        });
+    }
   };
 
   return (
@@ -105,14 +141,17 @@ const Register = () => {
                 defaultValue=""
                 required
                 sx={{ width: "100%" }}
+                error={!!validationErrors[item]}
               >
                 <TextField
                   id={item}
                   name={item}
-                  type={index > 1 ? "password" : "text"}
+                  type={index > 2 ? "password" : "text"}
                   label={
-                    index === 3
+                    index === 4
                       ? "Confirm Password"
+                      : index === 2
+                      ? "Number of emails"
                       : item.charAt(0).toUpperCase() + item.slice(1)
                   }
                   variant="standard"
@@ -137,6 +176,9 @@ const Register = () => {
                     },
                   }}
                 />
+                <FormHelperText sx={{ margin: "0px" }}>
+                  {validationErrors[item]}
+                </FormHelperText>
               </FormControl>
             ))}
             <Box
@@ -177,7 +219,6 @@ const Register = () => {
           </Box>
         </Grid>
       </Grid>
-      <LinkMailModal />
     </>
   );
 };

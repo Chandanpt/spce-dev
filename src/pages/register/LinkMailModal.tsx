@@ -10,24 +10,45 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { Box, FormControl, TextField } from "@mui/material";
 import StyledButton from "@/components/Button";
+import axios from "axios";
+import { Credentials } from ".";
 
-interface Credentials {
-  email: string;
-  password: string;
-}
+export default function LinkMailModal({
+  open,
+  credentials,
+  onClose, // Added onClose prop to handle modal closure
+}: {
+  open: boolean;
+  credentials: Credentials;
+  onClose: () => void;
+}) {
+  const [openModal, setOpenModal] = React.useState(false);
 
-export default function LinkMailModal() {
-  const [open, setOpen] = React.useState(true);
-  const [credentials, setCredentials] = React.useState<Credentials>({
-    email: "",
-    password: "",
-  });
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
-    setOpen(false);
+    setOpenModal(false);
+    onClose(); 
+  };
+
+  const registerHandler = () => {
+    const url = "http://192.168.0.12:8000/authorize/";
+
+    axios
+      .post(url, {
+        body: credentials,
+      })
+      .then((response) => {
+        const authorizationUrl = response.data?.authorization_url;
+        // window.open(authorizationUrl);
+
+        const link = document.createElement("a");
+        link.href = authorizationUrl;
+        link.target = "_blank";
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch((error) => {
+        console.error("Registration failed", error);
+      });
   };
 
   return (
@@ -38,7 +59,7 @@ export default function LinkMailModal() {
       sx={{
         "& .MuiDialog-paper": {
           width: "100%",
-          borderRadius: "24px"
+          borderRadius: "24px",
         },
       }}
     >
@@ -126,7 +147,7 @@ export default function LinkMailModal() {
         </FormControl>
       </DialogContent>
       <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
-        <StyledButton onClick={() => console.log("This is the submitHandler")} title="SUBMIT" />
+        <StyledButton onClick={registerHandler} title="SUBMIT" />
       </DialogActions>
     </Dialog>
   );
