@@ -13,10 +13,11 @@ export const auth = createSlice({
     initialState,
     reducers: {
         logout: () => {
+            document.cookie = "isLoggedIn=false; path=/";
             return initialState;
         },
         login: (state, action: PayloadAction<string>) => {
-            sessionStorage.setItem("isLoggedIn", "true");
+            document.cookie = "isLoggedIn=true; path=/";
             return {
                 value: {
                     isLoggedIn: true,
