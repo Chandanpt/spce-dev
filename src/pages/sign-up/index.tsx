@@ -89,7 +89,7 @@ const Signup = () => {
     setValidationErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      const url = "http://192.168.0.12:8000/authorize/";
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/authorize`;
 
       axios
         .post(url, {

@@ -25,7 +25,7 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
     const accessToken = sessionStorage.getItem("access_token");
     if (accessToken) {
       axios
-        .get("http://192.168.0.12:8000/me", {
+        .get(`${process.env.NEXT_PUBLIC_BASE_URL}/me`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

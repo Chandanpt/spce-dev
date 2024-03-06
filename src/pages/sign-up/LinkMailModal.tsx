@@ -30,7 +30,7 @@ export default function LinkMailModal({
   };
 
   const signupHandler = () => {
-    const url = "http://192.168.0.12:8000/authorize/";
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/authorize`;
 
     axios
       .post(url, {

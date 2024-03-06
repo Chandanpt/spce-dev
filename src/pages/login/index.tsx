@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   const loginHandler = () => {
-    const url = "http://192.168.0.12:8000/login/";
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/login`;
     setIsIncorrectCredentials(false);
 
     axios
