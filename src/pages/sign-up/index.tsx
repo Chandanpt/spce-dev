@@ -16,7 +16,7 @@ import axios from "axios";
 export interface Credentials {
   username: string;
   email: string;
-  emailQuantity: number;
+  // emailQuantity: number;
   password: string;
   confirmpassword: string;
   [key: string]: string | number;
@@ -26,7 +26,7 @@ const Signup = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     username: "",
     email: "",
-    emailQuantity: 0,
+    // emailQuantity: 0,
     password: "",
     confirmpassword: "",
   });
@@ -155,10 +155,13 @@ const Signup = () => {
                   name={item}
                   type={index > 2 ? "password" : "text"}
                   label={
-                    index === 4
+                    // index === 4
+                    //   ? "Confirm Password"
+                    //   : index === 2
+                    //   ? "Number of emails"
+                    //   : item.charAt(0).toUpperCase() + item.slice(1)
+                    index === 3
                       ? "Confirm Password"
-                      : index === 2
-                      ? "Number of emails"
                       : item.charAt(0).toUpperCase() + item.slice(1)
                   }
                   variant="standard"
