@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -38,9 +38,19 @@ const Signup = () => {
 
   const router = useRouter();
 
+  const setDefaultValues = () => {
+    const suggestedEmail = router.query.email as string;
+    const suggestedPassword = router.query.password as string;
+
+    setCredentials({
+      username: "",
+      email: suggestedEmail || "",
+      password: suggestedPassword || "",
+      confirmpassword: suggestedPassword || "",
+    });
+  };
+
   const isPasswordValid = (password: string): boolean => {
-    // At least 8 characters, 1 uppercase, 1 lowercase, and 1 special character
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return passwordRegex.test(password);
@@ -57,7 +67,6 @@ const Signup = () => {
       [property]: value,
     }));
 
-    // Clear password match error when typing in password or confirm password
     if (property === "password" || property === "confirmpassword") {
       setValidationErrors((prevErrors) => ({
         ...prevErrors,
@@ -114,6 +123,11 @@ const Signup = () => {
     }
   };
 
+  useEffect(() => {
+    setDefaultValues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.email, router.query.password]);
+
   return (
     <>
       <Grid container spacing={2} height="100vh">
@@ -153,7 +167,7 @@ const Signup = () => {
                 <TextField
                   id={item}
                   name={item}
-                  type={index > 2 ? "password" : "text"}
+                  type={index > 1 ? "password" : index === 1 ? "email" : "text"}
                   label={
                     // index === 4
                     //   ? "Confirm Password"
