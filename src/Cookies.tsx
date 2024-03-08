@@ -1,27 +1,24 @@
-"use server"
+"use server";
 
-import { cookies } from 'next/headers';
-import React, { useEffect } from 'react'
+import { cookies } from "next/headers";
+import React, { useEffect } from "react";
 
 const Cookies = () => {
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem("access_token");
 
-    useEffect(() => {
-        const accessToken = sessionStorage.getItem('access_token');
-    
-        if (accessToken) {
-          cookies().set({
-            name: 'access_token',
-            value: accessToken,
-            httpOnly: true,
-            sameSite: 'strict',
-            secure: true,
-          });
-        }
-      }, []);
+    if (accessToken && accessToken?.length > 0) {
+      cookies().set({
+        name: "access_token",
+        value: accessToken,
+        httpOnly: true,
+        sameSite: "strict",
+        secure: true,
+      });
+    }
+  }, []);
 
-  return (
-    <></>
-  )
-}
+  return <></>;
+};
 
-export default Cookies
+export default Cookies;

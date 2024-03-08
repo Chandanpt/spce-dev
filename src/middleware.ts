@@ -5,22 +5,21 @@ export const middleware = (req: NextRequest) => {
   const path = req.nextUrl.pathname;
 
   const isPublicPath =
-    path === "/login" || path === "/sign-up" || path === "/confirm-password";
+    path === "/login" || path === "/sign-up" || path === "/change-password";
 
   const tokenCookie = req.cookies.get("isLoggedIn");
-  const token = tokenCookie?.value || "";
-  console.log("tokenCookie:", tokenCookie);
-  console.log("token:", token);
-
-  if (!isPublicPath && !token) {
+  
+  const isLoggedIn = tokenCookie && tokenCookie.value === "true";
+  
+  if (!isPublicPath && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
-  } else if (isPublicPath && token) {
+  } else if (isPublicPath && isLoggedIn) {
     return NextResponse.redirect(new URL("/", req.nextUrl));
-  } else if (!isPublicPath && token) {
+  } else if (!isPublicPath && isLoggedIn) {
     return;
   }
 };
 
 export const config = {
-  matcher: ["/", "/profile", "/login", "/sign-up", "/confirm-password"],
+  matcher: ["/", "/profile", "/login", "/sign-up", "/change-password"],
 };

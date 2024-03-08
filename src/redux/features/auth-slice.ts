@@ -14,6 +14,7 @@ export const auth = createSlice({
     reducers: {
         logout: () => {
             document.cookie = "isLoggedIn=false; path=/";
+            sessionStorage.setItem("access_token", "");
             return initialState;
         },
         login: (state, action: PayloadAction<string>) => {

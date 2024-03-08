@@ -68,7 +68,6 @@ const Login = () => {
         router.push("/");
       })
       .catch((error) => {
-        console.log("This is the response", error?.response?.data?.detail);
         if (error?.response?.data?.detail === "Incorrect email or password") {
           setIsIncorrectCredentials(true);
         }
