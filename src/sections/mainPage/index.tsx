@@ -15,8 +15,8 @@ const MainPage = () => {
   const [selectedEmail, setSelectedEmail] = useState<SelectedEmail | null>(null);
   const [selectedEmailType, setSelectedEmailType] = useState<string>("");
 
-  const forCheckingEmail = (val: string) => {
-    setSelectedEmailType(val);
+  const forCheckingEmail = (cat: string) => {
+    setSelectedEmailType(cat);
   };
 
   useEffect(() => {

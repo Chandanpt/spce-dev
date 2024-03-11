@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
-  Divider,
   FormControl,
   FormHelperText,
   Grid,
@@ -122,11 +121,6 @@ const Signup = () => {
         });
     }
   };
-
-  useEffect(() => {
-    setDefaultValues();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.email, router.query.password]);
 
   return (
     <>

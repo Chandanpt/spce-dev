@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import MainLayout from './MainLayout';
+import React, { ReactNode } from "react";
+import MainLayout from "./MainLayout";
 
 interface Props {
   children: ReactNode;
 }
 
 const Layout = ({ children }: Props) => {
-  return <MainLayout>{children}</MainLayout>;
+  return <MainLayout selectEmailCheck={() => {}}>{children}</MainLayout>;
 };
 
 export default Layout;

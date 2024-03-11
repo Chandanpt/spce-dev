@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 
 interface Props {
   children: ReactNode;
-  selectEmailCheck: (val: string) => void;
+  selectEmailCheck: (cat: string) => void;
 }
 
 const MainLayout = ({ children, selectEmailCheck }: Props) => {
@@ -13,6 +13,7 @@ const MainLayout = ({ children, selectEmailCheck }: Props) => {
 
   useEffect(() => {
     selectEmailCheck(selectedEmailType);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmailType]);
 
   return (

@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import amazon from "../../assets/Amazon.png";
 import Link from "next/link";
 import { format } from "date-fns";
+import spce from "../../assets/Logo.svg";
 
 export interface SelectedEmail {
   details: {
@@ -64,7 +64,7 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <Image
-          src={data.logo}
+          src={data.logo === "None" ? spce : data.logo}
           alt="Amazon"
           width={48}
           height={48}

@@ -46,6 +46,7 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
   };
 
   const handleEmailClick = (index: number) => {
+    console.log("This is the selected email", filteredEmailData[index]);
     setSelectedMail(index);
     const selectedEmail = filteredEmailData[index];
     onSelectEmail(selectedEmail);
@@ -66,11 +67,12 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
     } else {
       getMailData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedEmailType]);
 
   return (
     <Box display="flex" flexDirection="column" gap="8px">
+      {filteredEmailData.length === 0 && <Box sx={{width: "100%", background: "red", height: "100%"}}></Box>}
       {filteredEmailData.map((item, index) => (
         <Box
           sx={{

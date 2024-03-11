@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import human from "../../assets/Human.png";
 import EditButton from "@/components/EditButtton";
 import axios from "axios";
-import Layout from "@/layout";
+import MainLayout from "@/layout/MainLayout";
 
 interface UserDataTypes {
   username: string;
@@ -37,7 +37,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <Layout>
+    <MainLayout selectEmailCheck={() => {}}>
       <Typography
         sx={{
           fontSize: "24px",
@@ -220,7 +220,7 @@ const Profile = () => {
           <EditButton title="Edit" onClick={() => console.log("Edit")} />
         </Box>
       </Box>
-    </Layout>
+    </MainLayout>
   );
 };
 
