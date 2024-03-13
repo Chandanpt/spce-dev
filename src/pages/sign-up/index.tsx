@@ -11,6 +11,7 @@ import LoginBackground from "@/components/LoginBackground";
 import StyledButton from "@/components/Button";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Loader from "@/components/Loader";
 
 export interface Credentials {
   username: string;
@@ -30,6 +31,7 @@ const Signup = () => {
     confirmpassword: "",
   });
   const [isExisting, setIsExisting] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
@@ -97,6 +99,7 @@ const Signup = () => {
     setValidationErrors(errors);
 
     if (Object.keys(errors).length === 0) {
+      setIsLoading(true);
       const url = `${process.env.NEXT_PUBLIC_BASE_URL}/authorize`;
 
       axios
@@ -115,140 +118,151 @@ const Signup = () => {
           } else {
             setIsExisting(true);
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Registration failed", error);
+          setIsLoading(false);
         });
     }
   };
 
   return (
     <>
-      <Grid container spacing={2} height="100vh">
-        <Grid item xs={6} padding="0">
-          <Box
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Grid container spacing={2} height="100vh">
+          <Grid item xs={6} padding="0">
+            <Box
+              sx={{
+                paddingX: "160px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: "32px",
+                    color: "#333333",
+                    fontWeight: "bold",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  Create an account
+                </Typography>
+              </Box>
+              {Object.keys(credentials).map((item, index) => (
+                <FormControl
+                  key={item}
+                  defaultValue=""
+                  required
+                  sx={{ width: "100%" }}
+                  error={!!validationErrors[item]}
+                >
+                  <TextField
+                    id={item}
+                    name={item}
+                    type={
+                      index > 1 ? "password" : index === 1 ? "email" : "text"
+                    }
+                    label={
+                      // index === 4
+                      //   ? "Confirm Password"
+                      //   : index === 2
+                      //   ? "Number of emails"
+                      //   : item.charAt(0).toUpperCase() + item.slice(1)
+                      index === 3
+                        ? "Confirm Password"
+                        : item.charAt(0).toUpperCase() + item.slice(1)
+                    }
+                    variant="standard"
+                    value={credentials[item]}
+                    onChange={handleInputChange}
+                    sx={{
+                      fontSize: "28px",
+                      color: "red",
+                      width: "100%",
+                      marginY: "8px",
+                      "& .MuiInput-root": {
+                        width: "100%",
+                        "&:before": {
+                          borderBottom: "2px solid #0497A7",
+                        },
+                        "&:active": {
+                          borderBottom: "2px solid #0497A7",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "2px solid #0497A7",
+                        },
+                      },
+                    }}
+                  />
+                  <FormHelperText
+                    sx={{
+                      margin: "0px",
+                      marginBottom: validationErrors[item] ? "8px" : "0px",
+                    }}
+                  >
+                    {validationErrors[item]}
+                  </FormHelperText>
+                </FormControl>
+              ))}
+              {isExisting && (
+                <Box>
+                  <Typography sx={{ color: "red", fontSize: "14px" }}>
+                    User Already Exists!
+                  </Typography>
+                </Box>
+              )}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginY: "16px",
+                  gap: "20px",
+                }}
+              >
+                <StyledButton onClick={() => signupHandler()} title="SIGN UP" />
+                <Typography sx={{ color: "#0497A7", fontSize: "20px" }}>
+                  Already have an account?{" "}
+                  <span
+                    style={{ fontWeight: "bold", cursor: "pointer" }}
+                    onClick={() => {
+                      setIsLoading(true);
+                      router.push("/login");
+                    }}
+                  >
+                    Log in
+                  </span>
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid
+            item
+            xs={6}
             sx={{
-              paddingX: "160px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
+              "&.MuiGrid-item": {
+                paddingLeft: "0",
+                paddingTop: "0",
+              },
             }}
           >
             <Box>
-              <Typography
-                sx={{
-                  fontSize: "32px",
-                  color: "#333333",
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Create an account
-              </Typography>
+              <LoginBackground />
             </Box>
-            {Object.keys(credentials).map((item, index) => (
-              <FormControl
-                key={item}
-                defaultValue=""
-                required
-                sx={{ width: "100%" }}
-                error={!!validationErrors[item]}
-              >
-                <TextField
-                  id={item}
-                  name={item}
-                  type={index > 1 ? "password" : index === 1 ? "email" : "text"}
-                  label={
-                    // index === 4
-                    //   ? "Confirm Password"
-                    //   : index === 2
-                    //   ? "Number of emails"
-                    //   : item.charAt(0).toUpperCase() + item.slice(1)
-                    index === 3
-                      ? "Confirm Password"
-                      : item.charAt(0).toUpperCase() + item.slice(1)
-                  }
-                  variant="standard"
-                  value={credentials[item]}
-                  onChange={handleInputChange}
-                  sx={{
-                    fontSize: "28px",
-                    color: "red",
-                    width: "100%",
-                    marginY: "8px",
-                    "& .MuiInput-root": {
-                      width: "100%",
-                      "&:before": {
-                        borderBottom: "2px solid #0497A7",
-                      },
-                      "&:active": {
-                        borderBottom: "2px solid #0497A7",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "2px solid #0497A7",
-                      },
-                    },
-                  }}
-                />
-                <FormHelperText
-                  sx={{
-                    margin: "0px",
-                    marginBottom: validationErrors[item] ? "8px" : "0px",
-                  }}
-                >
-                  {validationErrors[item]}
-                </FormHelperText>
-              </FormControl>
-            ))}
-            {isExisting && (
-              <Box>
-                <Typography sx={{ color: "red", fontSize: "14px" }}>
-                  User Already Exists!
-                </Typography>
-              </Box>
-            )}
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                marginY: "16px",
-                gap: "20px",
-              }}
-            >
-              <StyledButton onClick={() => signupHandler()} title="SIGN UP" />
-              <Typography sx={{ color: "#0497A7", fontSize: "20px" }}>
-                Already have an account?{" "}
-                <span
-                  style={{ fontWeight: "bold", cursor: "pointer" }}
-                  onClick={() => router.push("/login")}
-                >
-                  Log in
-                </span>
-              </Typography>
-            </Box>
-          </Box>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={6}
-          sx={{
-            "&.MuiGrid-item": {
-              paddingLeft: "0",
-              paddingTop: "0",
-            },
-          }}
-        >
-          <Box>
-            <LoginBackground />
-          </Box>
-        </Grid>
-      </Grid>
+      )}
     </>
   );
 };

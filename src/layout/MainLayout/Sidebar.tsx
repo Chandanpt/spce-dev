@@ -78,7 +78,11 @@ const sidebarData = [
   },
 ];
 
-const Sidebar = ({ onSelectEmailType }: { onSelectEmailType: (cat: string) => void }) => {
+const Sidebar = ({
+  onSelectEmailType,
+}: {
+  onSelectEmailType: (cat: string) => void;
+}) => {
   const [activeStep, setActiveStep] = useState(-1);
   const [expandedAccordion, setExpandedAccordion] = useState<number | false>(
     false
@@ -105,14 +109,14 @@ const Sidebar = ({ onSelectEmailType }: { onSelectEmailType: (cat: string) => vo
         display: { xs: "none", sm: "block" },
         "& .MuiDrawer-paper": {
           boxSizing: "border-box",
-          width: "300px",
+          width: "320px",
           height: "100vh",
           backgroundColor: "#FFFFFF",
           borderRadius: "30px",
           boxShadow: "none",
           border: "none",
-          overflow: "hidden",
           position: "relative",
+          overflow: "hidden",
         },
       }}
       open
@@ -130,7 +134,29 @@ const Sidebar = ({ onSelectEmailType }: { onSelectEmailType: (cat: string) => vo
         <Image src={logo} alt="Logo" width={80} height={80} />
       </Box>
 
-      <Box sx={{ marginY: "50px" }}>
+      <Box
+        sx={{
+          marginY: "50px",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+            height: "8px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#d9d9d9",
+            borderRadius: "4px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "transparent",
+          },
+          "&::-webkit-scrollbar-button": {
+            display: "none",
+          },
+          "&::-webkit-scrollbar-corner": {
+            background: "transparent",
+          },
+        }}
+      >
         {data.map((item, index) => (
           <Box key={item.title}>
             <AccordionWrapper

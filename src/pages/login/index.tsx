@@ -20,6 +20,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { login } from "@/redux/features/auth-slice";
+import Loader from "@/components/Loader";
 
 interface Credentials {
   email: string;
@@ -34,6 +35,8 @@ const Login = () => {
   });
   const [isIncorrectCredentials, setIsIncorrectCredentials] =
     useState<boolean>(false);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -54,6 +57,7 @@ const Login = () => {
   };
 
   const loginHandler = () => {
+    setIsLoading(true);
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/login`;
     setIsIncorrectCredentials(false);
 
@@ -66,6 +70,9 @@ const Login = () => {
         sessionStorage.setItem("access_token", accessToken);
         dispatch(login(credentials.email));
         router.push("/");
+        if (router.pathname === "/") {
+          setIsLoading(false);
+        }
       })
       .catch((error) => {
         if (error?.response?.data?.detail === "Incorrect email or password") {
@@ -73,174 +80,182 @@ const Login = () => {
         }
         console.error("Registration failed", error);
         router.push("login");
+        setIsLoading(false);
       });
   };
 
   return (
     <Box>
-      <Grid container>
-        <Grid item xs={6}>
-          <Box
-            sx={{
-              paddingX: "160px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-            }}
-          >
-            <Box>
-              <Typography
-                sx={{
-                  fontSize: "32px",
-                  color: "#333333",
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                Log In
-              </Typography>
-            </Box>
-            {Object.keys(credentials).map((item, index) => (
-              <FormControl
-                key={item}
-                defaultValue=""
-                required
-                sx={{ width: "100%" }}
-              >
-                <TextField
-                  id={item}
-                  type={index > 0 ? "password" : "text"}
-                  name={item}
-                  label={
-                    index === 0
-                      ? "Email/Mobile No."
-                      : item.charAt(0).toUpperCase() + item.slice(1)
-                  }
-                  variant="standard"
-                  value={credentials[item]}
-                  onChange={handleInputChange}
-                  sx={{
-                    fontSize: "28px",
-                    color: "red",
-                    width: "100%",
-                    marginY: "8px",
-                    "& .MuiInput-root": {
-                      width: "100%",
-                      "&:before": {
-                        borderBottom: "2px solid #0497A7",
-                      },
-                      "&:active": {
-                        borderBottom: "2px solid #0497A7",
-                      },
-                      "&:hover:not(.Mui-disabled):before": {
-                        borderBottom: "2px solid #0497A7",
-                      },
-                    },
-                  }}
-                  autoComplete="off"
-                />
-              </FormControl>
-            ))}
-
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Grid container>
+          <Grid item xs={6}>
             <Box
               sx={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-              }}
-            >
-              <Typography sx={{ fontSize: "16px", color: "#707070" }}>
-                Forgot Password ?
-              </Typography>
-            </Box>
-            {isIncorrectCredentials && (
-              <Box>
-                <Typography sx={{ color: "red", fontSize: "14px" }}>
-                  Please enter correct email and password!
-                </Typography>
-              </Box>
-            )}
-            <Box
-              sx={{
+                paddingX: "160px",
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
                 justifyContent: "center",
-                marginY: "16px",
-                gap: "20px",
+                alignItems: "center",
+                height: "100%",
               }}
             >
-              <StyledButton title="LOG IN" onClick={() => loginHandler()} />
-              <Typography sx={{ color: "#0497A7", fontSize: "20px" }}>
-                Don&apos;t have an account?{" "}
-                <span
-                  style={{ fontWeight: "bold", cursor: "pointer" }}
-                  onClick={() => router.push("/sign-up")}
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: "32px",
+                    color: "#333333",
+                    fontWeight: "bold",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  Sign Up
-                </span>
-              </Typography>
+                  Log In
+                </Typography>
+              </Box>
+              {Object.keys(credentials).map((item, index) => (
+                <FormControl
+                  key={item}
+                  defaultValue=""
+                  required
+                  sx={{ width: "100%" }}
+                >
+                  <TextField
+                    id={item}
+                    type={index > 0 ? "password" : "text"}
+                    name={item}
+                    label={
+                      index === 0
+                        ? "Email/Mobile No."
+                        : item.charAt(0).toUpperCase() + item.slice(1)
+                    }
+                    variant="standard"
+                    value={credentials[item]}
+                    onChange={handleInputChange}
+                    sx={{
+                      fontSize: "28px",
+                      color: "red",
+                      width: "100%",
+                      marginY: "8px",
+                      "& .MuiInput-root": {
+                        width: "100%",
+                        "&:before": {
+                          borderBottom: "2px solid #0497A7",
+                        },
+                        "&:active": {
+                          borderBottom: "2px solid #0497A7",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "2px solid #0497A7",
+                        },
+                      },
+                    }}
+                    autoComplete="off"
+                  />
+                </FormControl>
+              ))}
+
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Typography sx={{ fontSize: "16px", color: "#707070" }}>
+                  Forgot Password ?
+                </Typography>
+              </Box>
+              {isIncorrectCredentials && (
+                <Box>
+                  <Typography sx={{ color: "red", fontSize: "14px" }}>
+                    Please enter correct email and password!
+                  </Typography>
+                </Box>
+              )}
               <Box
                 sx={{
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
-                  marginTop: "20px",
-                  marginBottom: "20px",
+                  justifyContent: "center",
+                  marginY: "16px",
+                  gap: "20px",
                 }}
               >
-                <Divider sx={{ flexGrow: 1 }} />
-                <Typography
-                  variant="body2"
-                  sx={{ marginX: "10px", color: "text.secondary" }}
-                >
-                  OR
+                <StyledButton title="LOG IN" onClick={() => loginHandler()} />
+                <Typography sx={{ color: "#0497A7", fontSize: "20px" }}>
+                  Don&apos;t have an account?{" "}
+                  <span
+                    style={{ fontWeight: "bold", cursor: "pointer" }}
+                    onClick={() => {
+                      setIsLoading(true);
+                      router.push("/sign-up");
+                    }}
+                  >
+                    Sign Up
+                  </span>
                 </Typography>
-                <Divider sx={{ flexGrow: 1 }} />
-              </Box>
-              <Button
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "16px",
-                  boxShadow: "0px 5px 9px #0000001C",
-                  padding: "8px 16px",
-                  borderRadius: "30px",
-                }}
-              >
-                <Image src={google} alt="Google" width={40} height={40} />
-                <Typography
+                <Box
                   sx={{
-                    color: "#0497A7",
-                    fontSize: "20px",
-                    textTransform: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: "20px",
+                    marginBottom: "20px",
                   }}
                 >
-                  Continue with Google
-                </Typography>
-              </Button>
+                  <Divider sx={{ flexGrow: 1 }} />
+                  <Typography
+                    variant="body2"
+                    sx={{ marginX: "10px", color: "text.secondary" }}
+                  >
+                    OR
+                  </Typography>
+                  <Divider sx={{ flexGrow: 1 }} />
+                </Box>
+                <Button
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    boxShadow: "0px 5px 9px #0000001C",
+                    padding: "8px 16px",
+                    borderRadius: "30px",
+                  }}
+                >
+                  <Image src={google} alt="Google" width={40} height={40} />
+                  <Typography
+                    sx={{
+                      color: "#0497A7",
+                      fontSize: "20px",
+                      textTransform: "none",
+                    }}
+                  >
+                    Continue with Google
+                  </Typography>
+                </Button>
+              </Box>
             </Box>
-          </Box>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={{
+              "&.MuiGrid-item": {
+                paddingLeft: "0",
+                paddingTop: "0",
+              },
+            }}
+          >
+            <Box sx={{ height: "100%" }}>
+              <LoginBackground />
+            </Box>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={6}
-          sx={{
-            "&.MuiGrid-item": {
-              paddingLeft: "0",
-              paddingTop: "0",
-            },
-          }}
-        >
-          <Box sx={{ height: "100%" }}>
-            <LoginBackground />
-          </Box>
-        </Grid>
-      </Grid>
+      )}
     </Box>
   );
 };

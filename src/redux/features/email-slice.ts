@@ -13,7 +13,7 @@ const initialState: EmailState = {
       },
       email_type: "",
       email_use_case: "",
-      sender: "",
+      sender_name: "",
       subject: "",
       summary: "",
       thread_id: "",
@@ -40,7 +40,7 @@ export const email = createSlice({
           };
           email_type: string;
           email_use_case: string;
-          sender: string;
+          sender_name: string;
           subject: string;
           summary: string;
           thread_id: string;

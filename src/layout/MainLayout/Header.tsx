@@ -10,16 +10,24 @@ import { logout } from "@/redux/features/auth-slice";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const Header = () => {
+const Header = ({
+  setIsLoading,
+}: {
+  setIsLoading: (isLoading: boolean) => void;
+}) => {
   const [showOptions, setShowOptions] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const optionsRef = useRef<HTMLDivElement | null>(null);
 
   const handleLogout = () => {
+    setIsLoading(true);
     dispatch(logout());
     if (sessionStorage.getItem("access_token") === "") {
       router.push("/login");
+    }
+    if (router.pathname === "/login") {
+      setIsLoading(false);
     }
   };
 

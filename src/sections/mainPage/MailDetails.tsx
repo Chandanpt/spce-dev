@@ -13,7 +13,7 @@ export interface SelectedEmail {
   date: string;
   email_type: string;
   email_use_case: string;
-  sender: string;
+  sender_name: string;
   subject: string;
   summary: string;
   thread_id: string;
@@ -55,11 +55,30 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
         borderRadius: "15px",
         backgroundColor: "#FFFFFF",
         boxShadow: "0px 9px 16px #00000017",
-        height: "100%",
         padding: "24px",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
+        height: "70vh",
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": {
+              width: "8px",
+              height: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "#d9d9d9",
+              borderRadius: "4px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: "transparent",
+              margin: "32px 0"
+            },
+            "&::-webkit-scrollbar-button": {
+              display: "none",
+            },
+            "&::-webkit-scrollbar-corner": {
+              background: "transparent",
+            },
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -75,7 +94,7 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
           <Typography
             sx={{ fontSize: "22px", fontWeight: "bold", color: "#333333" }}
           >
-            AMAZON
+            {data.sender_name}
           </Typography>
           <Box sx={{ display: "flex", gap: "8px", alignItems: "center" }}>
             <Typography
@@ -159,25 +178,6 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
                 </Box>
               </Box>
             ))}
-      </Box>
-
-      <Typography
-        sx={{ fontSize: "20px", fontWeight: "bold", color: "#333333" }}
-      >
-        LINKS
-      </Typography>
-      <Box width="100%" display="flex" justifyContent="center">
-        <Typography
-          sx={{
-            fontSize: "20px",
-            color: "#FFFFFF",
-            backgroundColor: "#0497A7",
-            borderRadius: "24px",
-            padding: "12px 24px",
-          }}
-        >
-          View orders on Amazon.com
-        </Typography>
       </Box>
     </Box>
   );
