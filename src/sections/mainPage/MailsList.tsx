@@ -162,7 +162,7 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
                 />
               </Box>
               <Box
-                sx={{ display: "flex", flexDirection: "column", gap: "8px" }}
+                sx={{ display: "flex", flexDirection: "column", gap: "8px", width: "100%" }}
               >
                 <Box
                   sx={{
