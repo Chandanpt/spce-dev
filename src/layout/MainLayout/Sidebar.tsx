@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AccordionDetails,
   AccordionSummary,
@@ -26,6 +26,8 @@ import pin from "../../assets/pin.svg";
 import active_pin from "../../assets/active_pin.svg";
 import downArrow from "../../assets/Down_Arrow.svg";
 import activeDownArrow from "../../assets/Down_Arrow_Active.svg";
+import axios from "axios";
+import { SelectedEmail } from "@/sections/mainPage/MailDetails";
 
 const sidebarData = [
   {
@@ -87,20 +89,47 @@ const Sidebar = ({
   const [expandedAccordion, setExpandedAccordion] = useState<number | false>(
     false
   );
+  const [emailData, setEmailData] = useState<SelectedEmail[]>([]);
 
   const handleAccordionChange = (index: number) => {
     setExpandedAccordion((prev) => (prev === index ? false : index));
   };
 
-  const calculateAccordionHeight = (index: number): string => {
-    return expandedAccordion === index ? "auto" : "40px";
+  const getMailData = () => {
+    const accessToken = sessionStorage.getItem("access_token");
+    if (accessToken) {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_BASE_URL}/me`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .then((response) => {
+          console.log("This is response", response);
+          setEmailData(response?.data?.Emails);
+        })
+        .catch((error) => {});
+    }
   };
+
+  const emailCount = (title: string): number => {
+    console.log("This is the email data", emailData);
+    const count = emailData?.filter((item) => item.category === title).length;
+    return count;
+  };
+
   const data = sidebarData;
 
   const handleCategory = (index: number, cat: string) => {
     setActiveStep(index);
     onSelectEmailType(cat);
   };
+
+  useEffect(() => {
+    if (emailData.length === 0) {
+      getMailData();
+    }
+  }, []);
 
   return (
     <Drawer
@@ -148,6 +177,7 @@ const Sidebar = ({
           },
           "&::-webkit-scrollbar-track": {
             background: "transparent",
+            margin: "40px",
           },
           "&::-webkit-scrollbar-button": {
             display: "none",
@@ -209,7 +239,7 @@ const Sidebar = ({
                     marginRight: "8px",
                   }}
                 >
-                  2 New
+                  {emailCount(item.title)}
                 </Typography>
               </CustomSummary>
               <AccordionDetails>
@@ -219,7 +249,6 @@ const Sidebar = ({
                     paddingY: "16px",
                     bgcolor: "background.paper",
                     position: "relative",
-                    height: calculateAccordionHeight(index),
                     transition: "height 0.1s ease",
                     "& .MuiStepConnector-line": {
                       borderColor: "#E3E3E3",

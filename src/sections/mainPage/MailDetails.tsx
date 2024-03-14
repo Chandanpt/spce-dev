@@ -9,6 +9,7 @@ export interface SelectedEmail {
   details: {
     [key: string]: string;
   };
+  category?: string;
   logo: string;
   date: string;
   email_type: string;
@@ -60,25 +61,25 @@ const MailDetails: React.FC<{ selectedEmail: SelectedEmail }> = ({
         flexDirection: "column",
         gap: "16px",
         height: "70vh",
-            overflowY: "scroll",
-            "&::-webkit-scrollbar": {
-              width: "8px",
-              height: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "#d9d9d9",
-              borderRadius: "4px",
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "transparent",
-              margin: "32px 0"
-            },
-            "&::-webkit-scrollbar-button": {
-              display: "none",
-            },
-            "&::-webkit-scrollbar-corner": {
-              background: "transparent",
-            },
+        overflowY: "scroll",
+        "&::-webkit-scrollbar": {
+          width: "8px",
+          height: "8px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "#d9d9d9",
+          borderRadius: "4px",
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "transparent",
+          margin: "32px 0",
+        },
+        "&::-webkit-scrollbar-button": {
+          display: "none",
+        },
+        "&::-webkit-scrollbar-corner": {
+          background: "transparent",
+        },
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
