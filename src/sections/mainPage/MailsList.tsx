@@ -92,7 +92,7 @@ const Mail: React.FC<MailProps> = ({
           return createdTime > lastMonth;
         });
         setFilteredEmailData(filteredEmails);
-      } else {
+      } else if (selectedFilter === "" || "Pinned" || "All Time") {
         setFilteredEmailData(filteredDetails);
       }
       setIsLoading(false);

@@ -18,7 +18,7 @@ const MainPage = () => {
   const [selectedEmailType, setSelectedEmailType] = useState<string>("");
   const [selectedFilter, setSelectedFilter] = useState<string>("");
 
-  const filters = ["Pinned", "Last Week", "Last Month"];
+  const filters = ["Pinned", "Last Week", "Last Month", "All Time"];
 
   const forCheckingEmail = (cat: string) => {
     setSelectedEmailType(cat);
