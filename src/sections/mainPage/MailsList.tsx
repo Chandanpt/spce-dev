@@ -13,15 +13,28 @@ import Loader from "@/components/Loader";
 interface MailProps {
   onSelectEmail: (email: SelectedEmail | null) => void;
   selectedEmailType: string;
+  selectedFilter: string;
 }
 
-const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
+const Mail: React.FC<MailProps> = ({
+  onSelectEmail,
+  selectedEmailType,
+  selectedFilter,
+}) => {
   const [emailData, setEmailData] = useState<SelectedEmail[]>([]);
   const [filteredEmailData, setFilteredEmailData] = useState<SelectedEmail[]>(
     []
   );
   const [selectedMail, setSelectedMail] = useState(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const today = new Date();
+  const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const lastMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() - 1,
+    today.getDate()
+  );
 
   const getMailData = () => {
     setIsLoading(true);
@@ -50,7 +63,6 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
   };
 
   const handleEmailClick = (index: number) => {
-    console.log("This is the selected email", filteredEmailData[index]);
     setSelectedMail(index);
     const selectedEmail = filteredEmailData[index];
     onSelectEmail(selectedEmail);
@@ -68,13 +80,27 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
         ...item,
         details: JSON.parse(item.details),
       }));
-      setFilteredEmailData(filteredDetails);
+      if (selectedFilter === "Last Week") {
+        const filteredEmails = filteredDetails.filter((email) => {
+          const createdTime = new Date(email.created_at);
+          return createdTime > lastWeek;
+        });
+        setFilteredEmailData(filteredEmails);
+      } else if (selectedFilter === "Last Month") {
+        const filteredEmails = filteredDetails.filter((email) => {
+          const createdTime = new Date(email.created_at);
+          return createdTime > lastMonth;
+        });
+        setFilteredEmailData(filteredEmails);
+      } else {
+        setFilteredEmailData(filteredDetails);
+      }
       setIsLoading(false);
     } else {
       getMailData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedEmailType]);
+  }, [selectedEmailType, selectedFilter]);
 
   return (
     <>
@@ -120,7 +146,12 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
               }}
             >
               <Typography
-                sx={{ fontSize: "32px", fontWeight: "700", color: "", marginTop: "32px" }}
+                sx={{
+                  fontSize: "32px",
+                  fontWeight: "700",
+                  color: "#333333",
+                  marginTop: "32px",
+                }}
               >
                 No data found!
               </Typography>
@@ -162,7 +193,12 @@ const Mail: React.FC<MailProps> = ({ onSelectEmail, selectedEmailType }) => {
                 />
               </Box>
               <Box
-                sx={{ display: "flex", flexDirection: "column", gap: "8px", width: "100%" }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                  width: "100%",
+                }}
               >
                 <Box
                   sx={{

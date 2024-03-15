@@ -1,4 +1,11 @@
-import { Box, Divider, IconButton, InputBase, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  InputBase,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
@@ -9,13 +16,16 @@ import { AppDispatch } from "@/redux/store";
 import { logout } from "@/redux/features/auth-slice";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 const Header = ({
   setIsLoading,
 }: {
   setIsLoading: (isLoading: boolean) => void;
+  setIsSearchable?: (isSearchable: boolean) => void;
 }) => {
   const [showOptions, setShowOptions] = useState(false);
+  const [isSearchable, setIsSearchable] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const optionsRef = useRef<HTMLDivElement | null>(null);
@@ -32,6 +42,9 @@ const Header = ({
   };
 
   useEffect(() => {
+    if (router.pathname === "/") {
+      setIsSearchable(true);
+    }
     const handleClick = (event: MouseEvent) => {
       if (
         optionsRef.current &&
@@ -62,17 +75,33 @@ const Header = ({
         borderRadius: "15px",
       }}
     >
-      <Box
-        sx={{
-          backgroundColor: "#F4F4F4",
-          borderRadius: "5px",
-        }}
-      >
-        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-        <InputBase sx={{ flex: 1 }} placeholder="Search" />
-      </Box>
+      {isSearchable ? (
+        <Box
+          sx={{
+            backgroundColor: "#F4F4F4",
+            borderRadius: "5px",
+          }}
+        >
+          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+          <InputBase sx={{ flex: 1 }} placeholder="Search" />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+            color: "#0497A7",
+            cursor: "pointer",
+          }}
+          onClick={() => router.push("/")}
+        >
+          <ArrowCircleLeftIcon sx={{ fontSize: "32px" }} />
+          <Typography sx={{ fontSize: "20px" }}>Go back</Typography>
+        </Box>
+      )}
       <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
         <NotificationsNoneIcon />
         <Box position="relative" width="100%" ref={optionsRef}>

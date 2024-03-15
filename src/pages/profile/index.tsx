@@ -5,6 +5,7 @@ import human from "../../assets/Human.png";
 import EditButton from "@/components/EditButtton";
 import axios from "axios";
 import MainLayout from "@/layout/MainLayout";
+import Header from "@/layout/MainLayout/Header";
 
 interface UserDataTypes {
   username: string;
@@ -37,7 +38,9 @@ const Profile = () => {
   }, []);
 
   return (
-    <MainLayout selectEmailCheck={() => {}}>
+    // <MainLayout selectEmailCheck={() => {}}>
+    <Box sx={{ padding: "32px" }}>
+      <Header setIsLoading={() => {}} />
       <Typography
         sx={{
           fontSize: "24px",
@@ -71,32 +74,15 @@ const Profile = () => {
             borderRadius: "16px",
           }}
         >
-          <Box sx={{ display: "flex", gap: "24px", alignItems: "center" }}>
-            <Image src={human} alt="Human" height="100" width="100" />
-            <Box>
-              <Typography>{userData?.username}</Typography>
-              <Typography>Team Manager</Typography>
-              <Typography>Leads, USA</Typography>
+          <Box width="100%">
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <Image src={human} alt="Human" height="100" width="100" />
+              <Typography
+                sx={{ fontSize: "18px", color: "#333333", fontWeight: "bold" }}
+              >
+                Personal Information
+              </Typography>
             </Box>
-          </Box>
-          <EditButton title="Edit" onClick={() => console.log("Edit")} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px 24px",
-            border: "1px solid #0497A7",
-            borderRadius: "16px",
-          }}
-        >
-          <Box width="80%">
-            <Typography
-              sx={{ fontSize: "18px", color: "#333333", fontWeight: "bold" }}
-            >
-              Personal Information
-            </Typography>
             <Box
               sx={{
                 display: "flex",
@@ -104,13 +90,13 @@ const Profile = () => {
                 alignItems: "flex-start",
               }}
             >
-              <Box sx={{ width: "80%" }}>
+              <Box sx={{ width: "60%" }}>
                 <Box
                   sx={{ display: "flex", alignItems: "center", width: "100%" }}
                 >
                   <Box sx={{ width: "100%", marginY: "8px" }}>
                     <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      First Name
+                      User Name
                     </Typography>
                     <Typography sx={{ fontSize: "16px", color: "#333333" }}>
                       {userData?.username}
@@ -125,102 +111,14 @@ const Profile = () => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", width: "100%" }}
-                >
-                  <Box sx={{ width: "100%", marginY: "8px" }}>
-                    <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      Phone
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", color: "#333333" }}>
-                      +1 888 888 888
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "100%", marginY: "8px" }}>
-                    <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      Bio
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", color: "#333333" }}>
-                      Team Manager
-                    </Typography>
-                  </Box>
-                </Box>
               </Box>
+              {/* <EditButton title="Edit" onClick={() => console.log("Edit")} /> */}
             </Box>
           </Box>
-          <EditButton title="Edit" onClick={() => console.log("Edit")} />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px 24px",
-            border: "1px solid #0497A7",
-            borderRadius: "16px",
-          }}
-        >
-          <Box width="80%">
-            <Typography
-              sx={{ fontSize: "18px", color: "#333333", fontWeight: "bold" }}
-            >
-              Address
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-              }}
-            >
-              <Box sx={{ width: "80%" }}>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", width: "100%" }}
-                >
-                  <Box sx={{ width: "100%", marginY: "8px" }}>
-                    <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      Country
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", color: "#333333" }}>
-                      USA
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "100%", marginY: "8px" }}>
-                    <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      City/State
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", color: "#333333" }}>
-                      New York
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", width: "100%" }}
-                >
-                  <Box sx={{ width: "100%", marginY: "8px" }}>
-                    <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      Postal Code
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", color: "#333333" }}>
-                      ERT 2354
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "100%", marginY: "8px" }}>
-                    <Typography sx={{ fontSize: "16px", color: "#0497A7" }}>
-                      Tax ID
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", color: "#333333" }}>
-                      AS54781263
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-          <EditButton title="Edit" onClick={() => console.log("Edit")} />
         </Box>
       </Box>
-    </MainLayout>
+    </Box>
+    //</MainLayout>
   );
 };
 

@@ -105,7 +105,6 @@ const Sidebar = ({
           },
         })
         .then((response) => {
-          console.log("This is response", response);
           setEmailData(response?.data?.Emails);
         })
         .catch((error) => {});
@@ -113,7 +112,6 @@ const Sidebar = ({
   };
 
   const emailCount = (title: string): number => {
-    console.log("This is the email data", emailData);
     const count = emailData?.filter((item) => item.category === title).length;
     return count;
   };

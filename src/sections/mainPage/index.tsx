@@ -12,11 +12,20 @@ import MailDetails, { SelectedEmail } from "./MailDetails";
 import MainLayout from "@/layout/MainLayout";
 
 const MainPage = () => {
-  const [selectedEmail, setSelectedEmail] = useState<SelectedEmail | null>(null);
+  const [selectedEmail, setSelectedEmail] = useState<SelectedEmail | null>(
+    null
+  );
   const [selectedEmailType, setSelectedEmailType] = useState<string>("");
+  const [selectedFilter, setSelectedFilter] = useState<string>("");
+
+  const filters = ["Pinned", "Last Week", "Last Month"];
 
   const forCheckingEmail = (cat: string) => {
     setSelectedEmailType(cat);
+  };
+
+  const handleChipClick = (item: string) => {
+    setSelectedFilter(item);
   };
 
   useEffect(() => {
@@ -26,7 +35,7 @@ const MainPage = () => {
   return (
     <MainLayout selectEmailCheck={forCheckingEmail}>
       <Box sx={{ display: "flex", gap: "16px" }}>
-        <Chip
+        {/* <Chip
           label="Action Required"
           variant="outlined"
           sx={{
@@ -35,39 +44,28 @@ const MainPage = () => {
             borderRadius: "15px",
             border: "1px solid #0497A7",
           }}
-        />
-        <Chip
-          label="Pinned"
-          variant="filled"
-          sx={{
-            fontSize: "16px",
-            color: "#FFFFFF",
-            borderRadius: "15px",
-            border: "1px solid #0497A7",
-            backgroundColor: "#0497A7",
-          }}
-        />
-        <Chip
-          label="Last Week"
-          variant="outlined"
-          sx={{
-            fontSize: "16px",
-            color: "#333333",
-            borderRadius: "15px",
-            border: "1px solid #0497A7",
-          }}
-        />
-        <Chip
-          label="Last Month"
-          variant="outlined"
-          sx={{
-            fontSize: "16px",
-            color: "#333333",
-            borderRadius: "15px",
-            border: "1px solid #0497A7",
-          }}
-        />
-        <Chip
+        /> */}
+        {filters.map((item, index) => (
+          <Chip
+            key={index}
+            label={item}
+            variant={item === selectedFilter ? "filled" : "outlined"}
+            sx={{
+              fontSize: "16px",
+              color: item === selectedFilter ? "#FFFFFF" : "#333333",
+              borderRadius: "15px",
+              border: "1px solid #0497A7",
+              backgroundColor:
+                item === selectedFilter ? "#0497A7" : "1px solid #0497A7",
+              "&:hover": {
+                backgroundColor:
+                  item === selectedFilter ? "#0497A7" : "1px solid #0497A7",
+              },
+            }}
+            onClick={() => handleChipClick(item)}
+          />
+        ))}
+        {/* <Chip
           label="Next Month"
           variant="outlined"
           sx={{
@@ -76,7 +74,7 @@ const MainPage = () => {
             borderRadius: "15px",
             border: "1px solid #0497A7",
           }}
-        />
+        /> */}
       </Box>
       <Box sx={{ display: "flex", gap: "24px", marginTop: "24px" }}>
         <Accordion
@@ -111,6 +109,7 @@ const MainPage = () => {
             <Mail
               onSelectEmail={setSelectedEmail}
               selectedEmailType={selectedEmailType}
+              selectedFilter={selectedFilter}
             />
           </AccordionDetails>
         </Accordion>
