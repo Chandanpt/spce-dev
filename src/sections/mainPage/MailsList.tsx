@@ -32,7 +32,7 @@ const Mail: React.FC<MailProps> = ({
   const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const lastMonth = new Date(
     today.getFullYear(),
-    today.getMonth() - 1,
+    today.getMonth() - 2,
     today.getDate()
   );
 
@@ -82,13 +82,13 @@ const Mail: React.FC<MailProps> = ({
       }));
       if (selectedFilter === "Last Week") {
         const filteredEmails = filteredDetails.filter((email) => {
-          const createdTime = new Date(email.created_at);
+          const createdTime = new Date(email.date);
           return createdTime > lastWeek;
         });
         setFilteredEmailData(filteredEmails);
       } else if (selectedFilter === "Last Month") {
         const filteredEmails = filteredDetails.filter((email) => {
-          const createdTime = new Date(email.created_at);
+          const createdTime = new Date(email.date);
           return createdTime > lastMonth;
         });
         setFilteredEmailData(filteredEmails);
