@@ -127,6 +127,7 @@ const Sidebar = ({
     if (emailData.length === 0) {
       getMailData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
