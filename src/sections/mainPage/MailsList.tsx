@@ -32,7 +32,7 @@ const Mail: React.FC<MailProps> = ({
   const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const lastMonth = new Date(
     today.getFullYear(),
-    today.getMonth() - 2,
+    today.getMonth() - 1,
     today.getDate()
   );
 

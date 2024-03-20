@@ -2,7 +2,7 @@ html, body {
   background-color: #F4F4F4;
   margin: 0;
   padding: 0;
-  overflow-y: scroll; /* Correct property name */
+  overflow-y: scroll;
 }
 
 body::-webkit-scrollbar {
@@ -10,9 +10,9 @@ body::-webkit-scrollbar {
   height: 8px;
 }
 
-body::-webkit-scrollbar-thumb {
-  background: #d9d9d9;
-  border-radius: 4px;
+body,html::-webkit-scrollbar-thumb {
+  background: none;
+  border-radius: 0px;
 }
 
 body::-webkit-scrollbar-track {

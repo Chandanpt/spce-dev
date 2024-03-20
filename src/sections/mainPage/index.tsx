@@ -76,8 +76,16 @@ const MainPage = () => {
           }}
         /> */}
       </Box>
-      <Box sx={{ display: "flex", gap: "24px", marginTop: "24px" }}>
-        <Accordion
+      <Box
+        sx={{
+          display: "flex",
+          gap: "24px",
+          marginTop: "24px",
+          flexDirection: "column",
+          width: "80%",
+        }}
+      >
+        {/* <Accordion
           sx={{
             backgroundColor: "transparent",
             boxShadow: "none",
@@ -105,14 +113,41 @@ const MainPage = () => {
           </AccordionSummary>
           <AccordionDetails
             sx={{ marginY: "30px", background: "none", padding: "0" }}
-          >
+            >
             <Mail
-              onSelectEmail={setSelectedEmail}
-              selectedEmailType={selectedEmailType}
-              selectedFilter={selectedFilter}
+            onSelectEmail={setSelectedEmail}
+            selectedEmailType={selectedEmailType}
+            selectedFilter={selectedFilter}
             />
-          </AccordionDetails>
-        </Accordion>
+            </AccordionDetails>
+          </Accordion> */}
+        <Box
+          sx={{
+            borderRadius: "9px",
+            borderLeft: "9px solid #0497A7",
+            height: "50px",
+            display: "flex",
+            fontWeight: "700",
+            fontSize: "24px",
+            color: "#333333",
+            textTransform: "uppercase",
+            alignItems: "center",
+            paddingY: "8px",
+            paddingLeft: "24px",
+            fontFamily: "sans-serif",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0px 7px 11px #00000029",
+            marginY: "30px",
+          }}
+        >
+          {selectedEmailType}
+        </Box>
+
+        <Mail
+          onSelectEmail={setSelectedEmail}
+          selectedEmailType={selectedEmailType}
+          selectedFilter={selectedFilter}
+        />
         {selectedEmail && (
           <Box sx={{ width: "100%" }}>
             <MailDetails selectedEmail={selectedEmail} />

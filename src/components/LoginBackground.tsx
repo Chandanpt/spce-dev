@@ -28,10 +28,6 @@ const LoginBackground = () => {
         }}
       >
         <Image src={logo} alt="Logo" width={225} height={225} />
-        <Typography sx={{ color: "#FFFFFF", fontSize: "20px", textAlign: "center" }}>
-          “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.”
-        </Typography>
       </Box>
     </Box>
   );
